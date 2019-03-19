@@ -1,0 +1,24 @@
+// @import 'slider';
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+div[class*=slider] {
+    position: fixed;
+    z-index: 1000; // make sure it's the frontmost item
+
+    &.horizontal-slider {
+        width: 50vw;
+        top: 5vh;
+        left: 25vw;
+    }
+
+    &.vertical-slider {
+        width: 4px;
+        height: 50vh;
+        right: 5vw;
+        top: 25vh;
+    }
+}
