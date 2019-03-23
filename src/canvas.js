@@ -9,19 +9,52 @@ let stage = new Konva.Stage({
   container: 'canvas',
   width,
   height,
-  draggable: true
+  draggable: true,
+  offset: {
+    x: width / 2,
+    y: height / 2
+  },
+  x: width / 2,
+  y: height / 2
 })
 
-stage.on('dragend', () => {
-  let a = stage.getAbsolutePosition()
-  let b = stage.getPointerPosition()
-  let obj = {
-    x: Math.abs(a.x - b.x),
-    y: Math.abs(a.y - b.y)
-  }
+let nodeLayer = new Konva.Layer()
+let tooltipLayer = new Konva.Layer()
 
-  // malah dapet posisi pointer lu --'
-  debugCircle(obj)
+let testCircle = new Konva.Circle({
+  x: 633,
+  y: 590,
+  radius: 10,
+  fill: 'white',
+  stroke: 'black'
+})
+
+testCircle.on('mousemove', function () {
+  tooltip.position({
+    x: testCircle.x() - 90,
+    y: testCircle.y() - 50
+  })
+  tooltip.text('Pintu Depan Gedung 10')
+  tooltip.show()
+  tooltipLayer.batchDraw()
+})
+
+testCircle.on('mouseout', function () {
+  tooltip.hide()
+  tooltipLayer.draw()
+})
+
+nodeLayer.add(testCircle)
+
+var tooltip = new Konva.Text({
+  text: '',
+  fontFamily: 'Calibri',
+  fontSize: 18,
+  padding: 5,
+  textFill: 'white',
+  fill: 'black',
+  alpha: 0.75,
+  visible: false
 })
 
 let layer = new Konva.Layer()
@@ -30,27 +63,47 @@ let imageObj = new Image()
 imageObj.onload = function () {
   let map = new Konva.Image({
     image: imageObj,
-    width,
-    height
+    prevX: 0,
+    prevY: 0
   })
- 
+
   layer.add(map)
   stage.add(layer)
+  tooltipLayer.add(tooltip)
+  stage.add(nodeLayer)
+  stage.add(tooltipLayer)
+
+  stage.on('dragstart', () => {
+    map.prevX = map.getAbsolutePosition().x
+    map.prevY = map.getAbsolutePosition().y
+  })
+
+  stage.on('dragend', () => {
+    let curX = map.getAbsolutePosition().x
+    let curY = map.getAbsolutePosition().y
+    let deltaX = Math.abs(map.prevX - curX)
+    let deltaY = Math.abs(map.prevY - curY)
+    
+    if (curX > map.prevX) {
+      stage.offsetX(stage.offsetX() - deltaX)
+      stage.x(stage.x() - deltaX)
+    } else {
+      stage.offsetX(stage.offsetX() + deltaX)
+      stage.x(stage.x() + deltaX)
+    }
+
+    if (curY > map.prevY) {
+      stage.offsetY(stage.offsetY() - deltaY)
+      stage.y(stage.y() - deltaY)
+    } else {
+      stage.offsetY(stage.offsetY() + deltaY)
+      stage.y(stage.y() + deltaY)
+    }
+
+    stage.draw()
+  })
 }
 
 imageObj.src = map
-
-function debugCircle ({x, y}) {
-  let debug = new Konva.Circle({
-    x,
-    y,
-    radius: 10,
-    fill: 'red',
-    stroke: 'black'
-  })
-
-  layer.add(debug)
-  layer.draw()
-}
 
 export default stage

@@ -16,7 +16,7 @@ noUiSlider.create(horizontal_slider, {
 })
 
 noUiSlider.create(vertical_slider, {
-  start: 0.75,
+  start: 1,
   direction: 'rtl',
   orientation: 'vertical',
   tooltips: false,

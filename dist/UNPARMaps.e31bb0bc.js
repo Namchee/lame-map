@@ -222,7 +222,7 @@ _nouislider.default.create(horizontal_slider, {
 });
 
 _nouislider.default.create(vertical_slider, {
-  start: 0.75,
+  start: 1,
   direction: 'rtl',
   orientation: 'vertical',
   tooltips: false,
@@ -10781,17 +10781,46 @@ var stage = new _konva.default.Stage({
   container: 'canvas',
   width: width,
   height: height,
-  draggable: true
+  draggable: true,
+  offset: {
+    x: width / 2,
+    y: height / 2
+  },
+  x: width / 2,
+  y: height / 2
 });
-stage.on('dragend', function () {
-  var a = stage.getAbsolutePosition();
-  var b = stage.getPointerPosition();
-  var obj = {
-    x: Math.abs(a.x - b.x),
-    y: Math.abs(a.y - b.y) // malah dapet posisi pointer lu --'
-
-  };
-  debugCircle(obj);
+var nodeLayer = new _konva.default.Layer();
+var tooltipLayer = new _konva.default.Layer();
+var testCircle = new _konva.default.Circle({
+  x: 633,
+  y: 590,
+  radius: 10,
+  fill: 'white',
+  stroke: 'black'
+});
+testCircle.on('mousemove', function () {
+  tooltip.position({
+    x: testCircle.x() - 90,
+    y: testCircle.y() - 50
+  });
+  tooltip.text('Pintu Depan Gedung 10');
+  tooltip.show();
+  tooltipLayer.batchDraw();
+});
+testCircle.on('mouseout', function () {
+  tooltip.hide();
+  tooltipLayer.draw();
+});
+nodeLayer.add(testCircle);
+var tooltip = new _konva.default.Text({
+  text: '',
+  fontFamily: 'Calibri',
+  fontSize: 18,
+  padding: 5,
+  textFill: 'white',
+  fill: 'black',
+  alpha: 0.75,
+  visible: false
 });
 var layer = new _konva.default.Layer();
 var imageObj = new Image();
@@ -10799,29 +10828,45 @@ var imageObj = new Image();
 imageObj.onload = function () {
   var map = new _konva.default.Image({
     image: imageObj,
-    width: width,
-    height: height
+    prevX: 0,
+    prevY: 0
   });
   layer.add(map);
   stage.add(layer);
+  tooltipLayer.add(tooltip);
+  stage.add(nodeLayer);
+  stage.add(tooltipLayer);
+  stage.on('dragstart', function () {
+    map.prevX = map.getAbsolutePosition().x;
+    map.prevY = map.getAbsolutePosition().y;
+  });
+  stage.on('dragend', function () {
+    var curX = map.getAbsolutePosition().x;
+    var curY = map.getAbsolutePosition().y;
+    var deltaX = Math.abs(map.prevX - curX);
+    var deltaY = Math.abs(map.prevY - curY);
+
+    if (curX > map.prevX) {
+      stage.offsetX(stage.offsetX() - deltaX);
+      stage.x(stage.x() - deltaX);
+    } else {
+      stage.offsetX(stage.offsetX() + deltaX);
+      stage.x(stage.x() + deltaX);
+    }
+
+    if (curY > map.prevY) {
+      stage.offsetY(stage.offsetY() - deltaY);
+      stage.y(stage.y() - deltaY);
+    } else {
+      stage.offsetY(stage.offsetY() + deltaY);
+      stage.y(stage.y() + deltaY);
+    }
+
+    stage.draw();
+  });
 };
 
 imageObj.src = _unpar.default;
-
-function debugCircle(_ref) {
-  var x = _ref.x,
-      y = _ref.y;
-  var debug = new _konva.default.Circle({
-    x: x,
-    y: y,
-    radius: 10,
-    fill: 'red',
-    stroke: 'black'
-  });
-  layer.add(debug);
-  layer.draw();
-}
-
 var _default = stage;
 exports.default = _default;
 },{"konva":"node_modules/konva/lib/index.js","./../resources/unpar.svg":"resources/unpar.svg"}],"index.js":[function(require,module,exports) {
@@ -10885,7 +10930,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56693" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52505" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
