@@ -1,0 +1,176 @@
+{
+  "Pintu Utama Gedung 10": [
+    "Connector-1000-1810"
+  ],
+  "Connector-1000-1810": [
+    "Connector-740-1810",
+    "Pintu Utama Gedung 10",
+    "Connector-1230-1810"
+  ],
+  "Connector-740-1810": [
+    "Connector-1000-1810",
+    "Elevator"
+  ],
+  "Connector-1230-1810": [
+    "Connector-1000-1810",
+    "Tangga (Basement Parkir 2)"
+  ],
+  "Elevator": [
+    "Connector-740-1810"
+  ],
+  "Tangga (Basement Parkir 2)": [
+    "Connector-1230-1810"
+  ],
+  "Connector-1000-1700": [
+    "Connector-1000-1810",
+    "Connector-1000-1580",
+    "Tata Usaha MKU",
+    "Ruang Dosen MKU"
+  ],
+  "Tata Usaha MKU": [
+    "Connector-1000-1700"
+  ],
+  "Ruang Dosen MKU": [
+    "Connector-1000-1700"
+  ],
+  "Connector-1000-1580": [
+    "Connector-1000-1700",
+    "Connector-442-1580",
+    "Connector-1541-1580",
+    "Connector-1000-1432"
+  ],
+  "Connector-442-1580": [
+    "10102",
+    "Connector-1000-1580"
+  ],
+  "Connector-1541-1580": [
+    "10122",
+    "Connector-1000-1580"
+  ],
+  "10102": [
+    "Connector-442-1580"
+  ],
+  "10122": [
+    "Connector-1541-1580"
+  ],
+  "Connector-1000-1432": [
+    "Connector-1000-1580",
+    "Connector-1000-1380",
+    "Connector-1745-1432",
+    "Connector-472-1432"
+  ],
+  "Connector-472-1432": [
+    "10111",
+    "Connector-1000-1432",
+    "Connector-251-1432"
+  ],
+  "Connector-251-1432": [
+    "10103",
+    "Connector-472-1432",
+    "Connector-197-1432"
+  ],
+  "Connector-197-1432": [
+    "Connector-251-1432",
+    "Connector-70-1432",
+    "Connector-197-1229"
+  ],
+  "Connector-197-1229": [
+    "Connector-197-1432",
+    "Mushola"
+  ],
+  "Connector-70-1432": [
+    "Connector-197-1432",
+    "Toilet Pria",
+    "Toilet Wanita"
+  ],
+  "Toilet Pria": [
+    "Connector-70-1432"
+  ],
+  "Toilet Wanita": [
+    "Connector-70-1432"
+  ],
+  "10103": [
+    "Connector-251-1432"
+  ],
+  "10111": [
+    "Connector-472-1432"
+  ],
+  "Connector-1000-1380": [
+    "Connector-1000-1432",
+    "Connector-1000-1175"
+  ],
+  "Connector-1745-1432": [
+    "10119",
+    "Connector-1000-1432",
+    "Connector-1837-1432"
+  ],
+  "10119": [
+    "Connector-1745-1432"
+  ],
+  "Connector-1837-1432": [
+    "10121",
+    "Connector-1745-1432",
+    "Connector-1950-1432"
+  ],
+  "Connector-1950-1432": [
+    "10120",
+    "Connector-1837-1432"
+  ],
+  "10120": [
+    "Connector-1950-1432"
+  ],
+  "10121": [
+    "Connector-1837-1432"
+  ],
+  "Connector-1000-1175": [
+    "10112",
+    "10118",
+    "Connector-1000-1380",
+    "Connector-1000-977"
+  ],
+  "10112": [
+    "Connector-1000-1175"
+  ],
+  "10118": [
+    "Connector-1000-1175"
+  ],
+  "Connector-1000-977": [
+    "10113",
+    "10117",
+    "Connector-1000-1175",
+    "Connector-1000-745"
+  ],
+  "10113": [
+    "Connector-1000-977"
+  ],
+  "10117": [
+    "Connector-1000-977"
+  ],
+  "Connector-1000-745": [
+    "Connector-1000-977",
+    "Connector-1015-250"
+  ],
+  "Connector-1015-250": [
+    "Tangga (91xx)",
+    "Connector-1000-745",
+    "Connector-706-250",
+    "Connector-1371-250"
+  ],
+  "Tangga (91xx)": [
+    "Connector-1015-250"
+  ],
+  "Connector-706-250": [
+    "Connector-1015-250",
+    "Tangga 1 (Basement Parkir 1)"
+  ],
+  "Connector-1371-250": [
+    "Connector-1015-250",
+    "Tangga 2 (Basement Parkir 1)"
+  ],
+  "Tannga 1 (Basement Parkir 1)": [
+    "Connector-706-250"
+  ],
+  "Tangga 2 (Basement Parkir 2)": [
+    "Connector-1371-250"
+  ]
+}

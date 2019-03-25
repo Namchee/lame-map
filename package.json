@@ -16,7 +16,8 @@
     "@babel/preset-env": "^7.3.4",
     "eslint": "^5.15.2",
     "node-sass": "^4.11.0",
-    "parcel": "^1.12.2"
+    "parcel": "^1.12.2",
+    "typescript": "^3.3.4000"
   },
   "dependencies": {
     "font-awesome": "^4.7.0",

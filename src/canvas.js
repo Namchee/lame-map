@@ -1,5 +1,7 @@
 import Konva from 'konva'
-import map from './../resources/unpar.svg'
+import map from './../resources/floorplan/101.svg'
+import node from './submodules/node'
+import nodeData from './../resources/nodes/101-general.json'
 
 const width = window.innerWidth
 const height = window.innerHeight
@@ -18,46 +20,13 @@ let stage = new Konva.Stage({
   y: height / 2
 })
 
-let nodeLayer = new Konva.Layer()
-let tooltipLayer = new Konva.Layer()
-
-let testCircle = new Konva.Circle({
-  x: 633,
-  y: 590,
-  radius: 10,
-  fill: 'white',
-  stroke: 'black'
+// dev purposes
+stage.on('click', () => {
+  console.log(stage.getPointerPosition())
 })
 
-testCircle.on('mousemove', function () {
-  tooltip.position({
-    x: testCircle.x() - 90,
-    y: testCircle.y() - 50
-  })
-  tooltip.text('Pintu Depan Gedung 10')
-  tooltip.show()
-  tooltipLayer.batchDraw()
-})
-
-testCircle.on('mouseout', function () {
-  tooltip.hide()
-  tooltipLayer.draw()
-})
-
-nodeLayer.add(testCircle)
-
-var tooltip = new Konva.Text({
-  text: '',
-  fontFamily: 'Calibri',
-  fontSize: 18,
-  padding: 5,
-  textFill: 'white',
-  fill: 'black',
-  alpha: 0.75,
-  visible: false
-})
-
-let layer = new Konva.Layer()
+let mapLayer = new Konva.Layer()
+let nodeLayer = node(nodeData)
 let imageObj = new Image()
 
 imageObj.onload = function () {
@@ -67,11 +36,9 @@ imageObj.onload = function () {
     prevY: 0
   })
 
-  layer.add(map)
-  stage.add(layer)
-  tooltipLayer.add(tooltip)
+  mapLayer.add(map)
+  stage.add(mapLayer)
   stage.add(nodeLayer)
-  stage.add(tooltipLayer)
 
   stage.on('dragstart', () => {
     map.prevX = map.getAbsolutePosition().x

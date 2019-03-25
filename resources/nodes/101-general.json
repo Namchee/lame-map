@@ -1,0 +1,454 @@
+{
+  "list": [
+    {
+      "x": [
+        1000
+      ],
+      "y": [
+        90
+      ],
+      "id": "Tangga (91xx)",
+      "shadow": false
+    },
+    {
+      "x": [
+        685
+      ],
+      "y": [
+        90
+      ],
+      "id": "Tangga 1 (Basement Parkir 1)",
+      "shadow": false
+    },
+    {
+      "x": [
+        1350
+      ],
+      "y": [
+        90
+      ],
+      "id": "Tangga 2 (Basement Parkir 1)",
+      "shadow": false
+    },
+    {
+      "x": [
+        685
+      ],
+      "y": [
+        950
+      ],
+      "id": "10113",
+      "shadow": false
+    },
+    {
+      "x": [
+        685
+      ],
+      "y": [
+        1140
+      ],
+      "id": "10112",
+      "shadow": false
+    },
+    {
+      "x": [
+        455
+      ],
+      "y": [
+        1140
+      ],
+      "id": "10111",
+      "shadow": false
+    },
+    {
+      "x": [
+        110
+      ],
+      "y": [
+        1200
+      ],
+      "id": "Mushola",
+      "shadow": false
+    },
+    {
+      "x": [
+        50
+      ],
+      "y": [
+        1305
+      ],
+      "id": "Toilet Pria",
+      "shadow": false
+    },
+    {
+      "x": [
+        50
+      ],
+      "y": [
+        1505
+      ],
+      "id": "Toilet Wanita",
+      "shadow": false
+    },
+    {
+      "x": [
+        230
+      ],
+      "y": [
+        1610
+      ],
+      "id": "10103",
+      "shadow": false
+    },
+    {
+      "x": [
+        420
+      ],
+      "y": [
+        1610
+      ],
+      "id": "10102",
+      "shadow": false
+    },
+    {
+      "x": [
+        650
+      ],
+      "y": [
+        1670
+      ],
+      "id": "Tata Usaha MKU",
+      "shadow": false
+    },
+    {
+      "x": [
+        740
+      ],
+      "y": [
+        1845
+      ],
+      "id": "Elevator",
+      "shadow": false
+    },
+    {
+      "x": [
+        980
+      ],
+      "y": [
+        1845
+      ],
+      "id": "Pintu Utama Gedung 10",
+      "shadow": false
+    },
+    {
+      "x": [
+        1210
+      ],
+      "y": [
+        1850
+      ],
+      "id": "Tangga (Basement Parkir 2)",
+      "shadow": false
+    },
+    {
+      "x": [
+        1280
+      ],
+      "y": [
+        1680
+      ],
+      "id": "Ruang Dosen MKU",
+      "shadow": false
+    },
+    {
+      "x": [
+        1490
+      ],
+      "y": [
+        955
+      ],
+      "id": "10117",
+      "shadow": false
+    },
+    {
+      "x": [
+        1490
+      ],
+      "y": [
+        1155
+      ],
+      "id": "10118",
+      "shadow": false
+    },
+    {
+      "x": [
+        1730
+      ],
+      "y": [
+        1155
+      ],
+      "id": "10119",
+      "shadow": false
+    },
+    {
+      "x": [
+        1935
+      ],
+      "y": [
+        1155
+      ],
+      "id": "10120",
+      "shadow": false
+    },
+    {
+      "x": [
+        1520
+      ],
+      "y": [
+        1620
+      ],
+      "id": "10122",
+      "shadow": false
+    },
+    {
+      "x": [
+        1815
+      ],
+      "y": [
+        1620
+      ],
+      "id": "10121",
+      "shadow": false
+    },
+    {
+      "x": [
+        1000
+      ],
+      "y": [
+        1810
+      ],
+      "id": "Connector-1000-1810",
+      "shadow": true
+    },
+    {
+      "x": [
+        762
+      ],
+      "y": [
+        1810
+      ],
+      "id": "Connector-740-1810",
+      "shadow": true
+    },
+    {
+      "x": [
+        1230
+      ],
+      "y": [
+        1810
+      ],
+      "id": "Connector-1230-1810",
+      "shadow": true
+    },
+    {
+      "x": [
+        1000
+      ],
+      "y": [
+        1700
+      ],
+      "id": "Connector-1000-1700",
+      "shadow": true
+    },
+    {
+      "x": [
+        1000
+      ],
+      "y": [
+        1580
+      ],
+      "id": "Connector-1000-1580",
+      "shadow": true
+    },
+    {
+      "x": [
+        442
+      ],
+      "y": [
+        1580
+      ],
+      "id": "Connector-442-1580",
+      "shadow": true
+    },
+    {
+      "x": [
+        1541
+      ],
+      "y": [
+        1580
+      ],
+      "id": "Connector-1541-1580",
+      "shadow": true
+    },
+    {
+      "x": [
+        70
+      ],
+      "y": [
+        1432
+      ],
+      "id": "Connector-70-1432",
+      "shadow": true
+    },
+    {
+      "x": [
+        197
+      ],
+      "y": [
+        1432
+      ],
+      "id": "Connector-197-1432",
+      "shadow": true
+    },
+    {
+      "x": [
+        197
+      ],
+      "y": [
+        1229
+      ],
+      "id": "Connector-197-1229",
+      "shadow": true
+    },
+    {
+      "x": [
+        251
+      ],
+      "y": [
+        1432
+      ],
+      "id": "Connector-251-1432",
+      "shadow": true
+    },
+    {
+      "x": [
+        472
+      ],
+      "y": [
+        1432
+      ],
+      "id": "Connector-472-1432",
+      "shadow": true
+    },
+    {
+      "x": [
+        1000
+      ],
+      "y": [
+        1432
+      ],
+      "id": "Connector-1000-1432",
+      "shadow": true
+    },
+    {
+      "x": [
+        1745
+      ],
+      "y": [
+        1432
+      ],
+      "id": "Connector-1745-1432",
+      "shadow": true
+    },
+    {
+      "x": [
+        1837
+      ],
+      "y": [
+        1432
+      ],
+      "id": "Connector-1837-1432",
+      "shadow": true
+    },
+    {
+      "x": [
+        1950
+      ],
+      "y": [
+        1432
+      ],
+      "id": "Connector-1950-1432",
+      "shadow": true
+    },
+    {
+      "x": [
+        1000
+      ],
+      "y": [
+        1380
+      ],
+      "id": "Connector-1000-1380",
+      "shadow": true
+    },
+    {
+      "x": [
+        1000
+      ],
+      "y": [
+        1175
+      ],
+      "id": "Connector-1000-1175",
+      "shadow": true
+    },
+    {
+      "x": [
+        1000
+      ],
+      "y": [
+        977
+      ],
+      "id": "Connector-1000-977",
+      "shadow": true
+    },
+    {
+      "x": [
+        1000
+      ],
+      "y": [
+        745
+      ],
+      "id": "Connector-1000-745",
+      "shadow": true
+    },
+    {
+      "x": [
+        1015
+      ],
+      "y": [
+        250
+      ],
+      "id": "Connector-1015-250",
+      "shadow": true
+    },
+    {
+      "x": [
+        706
+      ],
+      "y": [
+        250
+      ],
+      "id": "Connector-706-250",
+      "shadow": true
+    },
+    {
+      "x": [
+        1371
+      ],
+      "y": [
+        250
+      ],
+      "id": "Connector-1371-250",
+      "shadow": true
+    }
+  ]
+}
