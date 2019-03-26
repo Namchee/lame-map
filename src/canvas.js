@@ -2,6 +2,7 @@ import Konva from 'konva'
 import map from './../resources/floorplan/101.svg'
 import node from './submodules/node'
 import nodeData from './../resources/nodes/101-general.json'
+import adjacencyData from './../resources/nodes/101-adjacency.json'
 
 const width = window.innerWidth
 const height = window.innerHeight
@@ -26,7 +27,7 @@ stage.on('click', () => {
 })
 
 let mapLayer = new Konva.Layer()
-let nodeLayer = node(nodeData)
+let nodeLayer = node({ nodeData, adjacencyData })
 let imageObj = new Image()
 
 imageObj.onload = function () {

@@ -1,7 +1,13 @@
 import Konva from 'konva'
+import Graph from './Graph'
+import Place from './Place'
 import 'font-awesome/css/font-awesome.min.css'
 
-function generateNodeLayer (data) {
+let table = new Map()
+
+function generateNodeLayer ({ nodeData: data, adjacencyData: adjacency }) {
+  table.clear()
+
   const node_layer = new Konva.Layer()
   for (let i = 0; i < data.list.length; i++) {
     let new_node = data.list[i]
@@ -10,6 +16,8 @@ function generateNodeLayer (data) {
     for (let j = 0; j < new_node.x.length; j++) {
       let x = new_node.x[j]
       let y = new_node.y[j]
+      let place = new Place(info, x, y)
+      table.set(info, place)
 
       if (new_node.shadow) 
         node_layer.add(generateShadowNodes({ x, y, info }))
@@ -17,6 +25,16 @@ function generateNodeLayer (data) {
         node_layer.add(generateNodes({ x, y, info }))
     }
   }
+
+  table.forEach((value, key, map) => {
+    console.log(key)
+    let arr = adjacency[key]
+    console.log(arr)
+
+    for (let item of arr) {
+      value.addDestination(table.get(item))
+    }
+  })
 
   return node_layer
 }
