@@ -27,12 +27,11 @@ function generateNodeLayer ({ nodeData: data, adjacencyData: adjacency }) {
   }
 
   table.forEach((value, key, map) => {
-    console.log(key)
     let arr = adjacency[key]
-    console.log(arr)
+    let len = arr.length
 
-    for (let item of arr) {
-      value.addDestination(table.get(item))
+    for (let i = 0; i < len; i++) {
+      value.addDestination(table.get(arr[i]))
     }
   })
 

@@ -1,10 +1,15 @@
 /**
  * ENTRY POINT FILE
  */
-import './src/styles/style.scss'
+
 import './src/slider'
 import './src/canvas'
+import 'materialize-css/dist/css/materialize.min.css'
+import 'materialize-css/dist/js/materialize'
+import './src/styles/style.scss'
 import mip from './src/canvas'
+
+M.AutoInit()
 
 let zoomSlider = document.querySelector('.vertical-slider')
 
