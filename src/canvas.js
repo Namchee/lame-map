@@ -1,6 +1,6 @@
 import Konva from 'konva'
 import map from './../resources/floorplan/101.svg'
-import node from './submodules/node'
+import node from './submodules/node.ts'
 import nodeData from './../resources/nodes/101-general.json'
 import adjacencyData from './../resources/nodes/101-adjacency.json'
 
@@ -21,13 +21,9 @@ let stage = new Konva.Stage({
   y: height / 2
 })
 
-// dev purposes
-stage.on('click', () => {
-  console.log(stage.getPointerPosition())
-})
-
 let mapLayer = new Konva.Layer()
-let nodeLayer = node({ nodeData, adjacencyData })
+let nodeLayer = node.generateNodeLayer({ nodeData, adjacencyData })
+let pathLayer = node.drawPath('10121', 'Mushola')
 let imageObj = new Image()
 
 imageObj.onload = function () {
@@ -40,6 +36,7 @@ imageObj.onload = function () {
   mapLayer.add(map)
   stage.add(mapLayer)
   stage.add(nodeLayer)
+  stage.add(pathLayer)
 
   stage.on('dragstart', () => {
     map.prevX = map.getAbsolutePosition().x

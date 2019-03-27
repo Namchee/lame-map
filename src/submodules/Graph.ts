@@ -1,9 +1,9 @@
 import Place from './Place'
 
-class Graph {
+export default class Graph {
   private _places: Set<Place>
 
-  constructor () {
+  public constructor () {
     this._places = new Set<Place>()
   }
 
@@ -15,11 +15,11 @@ class Graph {
     this._places = places
   }
 
-  addPlace (place: Place): void {
+  public addPlace (place: Place): void {
     this.places.add(place)
   }
 
-  calculateShortestPath (graph: Graph, source: Place): Graph {
+  public calculateShortestPath (source: Place): void {
     this.resetPath()
     source.distance = 0
 
@@ -33,7 +33,7 @@ class Graph {
       unsettledPlaces.delete(currentPlace)
 
       let adjacencies: Map<Place, number> = currentPlace.adjacentNodes
-      adjacencies.forEach((value, key, adjacencies) => {
+      adjacencies.forEach((value, key) => {
         let adjacentPlace: Place = key
         let distance: number = value
 
@@ -45,13 +45,11 @@ class Graph {
 
       settledPlaces.add(currentPlace)
     }
-
-    return graph
   }
 
   private getLowestDistanceNode (unsettledPlaces: Set<Place>): Place {
     let lowestDistancePlace: Place = null
-    let lowestDistance: number = +Infinity
+    let lowestDistance: number = Number.MAX_VALUE
 
     unsettledPlaces.forEach(place => {
       let currDistance = place.distance
@@ -75,12 +73,14 @@ class Graph {
     }
   }
 
-  private resetPath () {
+  private resetPath (): void {
     this.places.forEach(place => {
       place.resetShortestPath()
-      place.distance = +Infinity
+      place.distance = Number.MAX_VALUE
     })
   }
-}
 
-export default Graph
+  public resetGraph (): void {
+    this.places.clear()
+  }
+}
