@@ -1,18 +1,20 @@
-class Place {
+export default class Place {
   private _id: string
   private _x: number 
   private _y: number
   private _distance: number
   private _shortestPath: Place[]
   private _adjacentNodes: Map<Place, number>
+  readonly shadow: boolean
 
-  constructor (id: string, x: number, y: number) {
+  constructor (id: string, x: number, y: number, shadow: boolean) {
     this._id = id
     this._x = x
     this._y = y
     this._distance = Number.MAX_VALUE
     this._adjacentNodes = new Map<Place, number>()
     this._shortestPath = []
+    this.shadow = shadow
   }
 
   get x () {
@@ -69,5 +71,3 @@ class Place {
     return false
   }
 }
-
-export default Place

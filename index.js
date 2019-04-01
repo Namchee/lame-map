@@ -2,26 +2,26 @@
  * ENTRY POINT FILE
  */
 
-import './src/slider'
-import './src/canvas'
-import 'materialize-css/dist/css/materialize.min.css'
-import 'materialize-css/dist/js/materialize'
-import './src/styles/style.scss'
-import mip from './src/canvas'
+import './src/slider';
+import 'materialize-css/dist/css/materialize.min.css';
+import M from 'materialize-css/dist/js/materialize';
+import './src/assets/styles/style.scss';
 
-M.AutoInit()
+import mip from './src/canvas';
 
-let zoomSlider = document.querySelector('.vertical-slider')
+M.AutoInit();
+
+let zoomSlider = document.querySelector('.vertical-slider');
 
 zoomSlider.noUiSlider.on('slide', () => {
-  let think_tank = zoomSlider.noUiSlider.get()
-  mip.scale({ x: think_tank, y: think_tank })
-  mip.draw()
-})
+  let think_tank = zoomSlider.noUiSlider.get();
+  mip.scale({ x: think_tank, y: think_tank });
+  mip.draw();
+});
 
-let rotateSlider = document.querySelector('.horizontal-slider')
+let rotateSlider = document.querySelector('.horizontal-slider');
 rotateSlider.noUiSlider.on('slide', () => {
-  let tank_think = rotateSlider.noUiSlider.get()
-  mip.rotation(tank_think)
-  mip.draw()
-})
+  let tank_think = rotateSlider.noUiSlider.get();
+  mip.rotation(tank_think);
+  mip.draw();
+});
