@@ -1,49 +1,25 @@
-import Konva from 'konva'
-import Graph from './graph'
-import Place from './place'
-import 'font-awesome/css/font-awesome.min.css'
-
-const table: Map<string, Place> = new Map<string, Place>();
-const graph: Graph = new Graph();
+import Konva from 'konva';
+import Graph from './graph';
+import Place from './place';
+import 'font-awesome/css/font-awesome.min.css';
 
 interface Point {
   x: number;
   y: number;
 }
 
-function generateNodeLayer ({ nodeData: data, adjacencyData: adjacency }): Konva.Layer {
-  table.clear();
-  graph.resetGraph();
+function drawNodes (nodes: Set<Place>): Konva.Layer {
+  let nodeLayer: Konva.Layer = new Konva.Layer;
 
-  const node_layer = new Konva.Layer();
+  nodes.forEach(value => {
+    let x = value.x;
+    let y = value.y;
 
-  for (let i = 0; i < data.list.length; i++) {
-    let newPlace = data.list[i];
-    let info = newPlace.id;
-    let x = newPlace.x;
-    let y = newPlace.y;
-
-    let place = new Place(info, x, y, newPlace.shadow);
-    table.set(info, place);
-    graph.addPlace(place);
-
-    if (!newPlace.shadow)
-      node_layer.add(generateNodes({ x, y }));
-    else
-      node_layer.add(generateShadowNodes({ x, y }, info));
-
-  }
-
-  table.forEach((value, key) => {
-    let arr = adjacency[key];
-    let len = arr.length;
-
-    for (let i = 0; i < len; i++) {
-      value.addDestination(table.get(arr[i]));
-    }
+    if (!value.shadow)
+      nodeLayer.add(generateNodes({ x, y }));
   })
 
-  return node_layer
+  return nodeLayer;
 }
 
 function generateNodes (point: Point): Konva.Text {
@@ -65,38 +41,21 @@ function generateNodes (point: Point): Konva.Text {
   return placeNode;
 }
 
-function generateShadowNodes (point: Point, info: string): Konva.Circle {
-  let { x, y } = point;
-
-  let shadows = new Konva.Circle({
-    x,
-    y,
-    radius: 10,
-    fill: 'black'
-  });
-
-  return shadows;
-}
-
-function drawPath (source: string, finalDestination: string): Konva.Layer {
+function drawPath (finalDestination: Place): Konva.Layer {
   let pathLayer: Konva.Layer = new Konva.Layer();
 
-  let sourcePlace: Place = table.get(source);
-  graph.calculateShortestPath(sourcePlace);
-
-  let finalPlace: Place = table.get(finalDestination);
-  let path: Place[] = finalPlace.shortestPath;
-
-  path.push(finalPlace);
+  let path: Place[] = finalDestination.shortestPath;
+  path.push(finalDestination);
 
   let points: number[] = [];
   let len: number = path.length;
 
-  for (let i: number = 1; i < len; i++) {
-    points.push(path[i - 1].x, path[i - 1].y, path[i].x, path[i].y);  
+  for (let i = 1; i < len; i++) {
+    points.push(path[i - 1].x, path[i - 1].y);
+    points.push(path[i].x, path[i].y);
   }
 
-  let line = new Konva.Line({
+  let pathLine: Konva.Line = new Konva.Line({
     stroke: '#42a5f5',
     strokeWidth: 8,
     lineJoin: 'round',
@@ -104,20 +63,9 @@ function drawPath (source: string, finalDestination: string): Konva.Layer {
     points
   });
 
-  pathLayer.add(line)
-
+  pathLayer.add(pathLine);
+  
   return pathLayer;
 }
 
-function fillElement (elem: HTMLElement): void {
-  table.forEach((value, key) => {
-    if (!value.shadow) {
-      let option = document.createElement('option');
-      option.textContent = key;
-      option.value = key;
-      elem.appendChild(option);
-    }
-  });
-}
-
-export default { generateNodeLayer, drawPath, fillElement }
+export default { drawNodes, drawPath };

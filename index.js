@@ -2,26 +2,23 @@
  * ENTRY POINT FILE
  */
 
-import './src/slider';
-import 'materialize-css/dist/css/materialize.min.css';
-import M from 'materialize-css/dist/js/materialize';
+import './src/ui';
+import canvas from './src/canvas';
 import './src/assets/styles/style.scss';
+import PATH from './src/subcomponents/path';
 
-import mip from './src/canvas';
-
-M.AutoInit();
+let { floorplan, floorinfo, flooradjacency } = PATH.f101;
+canvas.generateMap(floorplan, floorinfo, flooradjacency);
 
 let zoomSlider = document.querySelector('.vertical-slider');
+let rotateSlider = document.querySelector('.horizontal-slider');
 
 zoomSlider.noUiSlider.on('slide', () => {
-  let think_tank = zoomSlider.noUiSlider.get();
-  mip.scale({ x: think_tank, y: think_tank });
-  mip.draw();
+  let zoomValue = zoomSlider.noUiSlider.get();
+  canvas.zoom(zoomValue);
 });
 
-let rotateSlider = document.querySelector('.horizontal-slider');
 rotateSlider.noUiSlider.on('slide', () => {
-  let tank_think = rotateSlider.noUiSlider.get();
-  mip.rotation(tank_think);
-  mip.draw();
+  let degree = rotateSlider.noUiSlider.get();
+  canvas.rotate(degree);
 });

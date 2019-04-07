@@ -1,17 +1,18 @@
 import Konva from 'konva';
-import node from './subcomponents/node.ts';
-import map from './assets/floorplan/101.svg';
-import nodeData from './assets/floorinfo/101-general.json';
-import adjacencyData from './assets/floorinfo/101-adjacency.json';
+import node from './subcomponents/node';
+import Place from './subcomponents/place';
+import Graph from './subcomponents/graph';
 
-let dropdown = document.querySelector('select');
 let loader = document.querySelector('.main-loader');
+let position = '10102';
 
 const width = window.innerWidth;
 const height = window.innerHeight;
+const table = new Map();
+const graph = new Graph();
 
 // scale is temp
-let stage = new Konva.Stage({
+const stage = new Konva.Stage({
   container: 'canvas',
   width,
   height,
@@ -24,23 +25,43 @@ let stage = new Konva.Stage({
   y: height / 2
 });
 
-let mapLayer = new Konva.Layer();
-let nodeLayer = node.generateNodeLayer({ nodeData, adjacencyData });
-let pathLayer = node.drawPath('10121', 'Mushola');
-node.fillElement(dropdown);
-let imageObj = new Image();
+function generateMap (map, nodeData, adjacencyData) {
+  stage.destroyChildren();
 
-imageObj.onload = function () {
-  let map = new Konva.Image({
-    image: imageObj,
-    prevX: 0,
-    prevY: 0
-  });
+  let image = new Image();
+  let mapLayer = new Konva.Layer();
 
-  mapLayer.add(map);
-  stage.add(mapLayer);
-  stage.add(nodeLayer);
-  stage.add(pathLayer);
+  image.onload = () => {
+    let imageObj = new Konva.Image({
+      image,
+      prevX: 0,
+      prevY: 0
+    });
+
+    initGraph(nodeData, adjacencyData);
+    handleDrag(imageObj);
+    generateShortestPath(table.get(position));
+
+    mapLayer.add(imageObj);
+    let nodeLayer = node.drawNodes(graph.places);
+    let pathLayer = node.drawPath(table.get('Mushola'));
+
+    stage.add(mapLayer);
+    stage.add(nodeLayer);
+    stage.add(pathLayer);
+    stage.draw();
+
+    loader.style.display = 'none';
+  };
+
+  image.src = map;
+}
+
+function handleDrag (map) {
+  /**
+   * TODOS
+   * Add dragBoundFunc later
+   */
 
   stage.on('dragstart', () => {
     map.prevX = map.getAbsolutePosition().x;
@@ -71,20 +92,46 @@ imageObj.onload = function () {
 
     stage.draw();
   });
+}
 
-  dropdown.addEventListener('change', () => {
-    loader.style.display = 'flex';
-    let value = dropdown.value;
-    pathLayer.destroy();
-    pathLayer = node.drawPath('10121', value);
-    stage.add(pathLayer);
-    stage.draw();
-    loader.style.display = 'none';
+function initGraph (nodeData, adjacencyData) {
+  table.clear();
+  graph.resetGraph();
+  
+  for (let i = 0; i < nodeData.list.length; i++) {
+    let newPlace = nodeData.list[i];
+    let info = newPlace.id;
+    let x = newPlace.x;
+    let y = newPlace.y;
+
+    let place = new Place(info, x, y, newPlace.shadow);
+    table.set(info, place);
+    graph.addPlace(place);
+  }
+
+  table.forEach((value, key) => {
+    let arr = adjacencyData[key];
+    let len = arr.length;
+
+    for (let i = 0; i < len; i++) {
+      value.addDestination(table.get(arr[i]));
+    }
   });
+}
 
-  loader.style.display = 'none';
-};
+function generateShortestPath (source) {
+  graph.resetPath();
+  graph.calculateShortestPath(source);
+}
 
-imageObj.src = map;
+function zoom (scale) {
+  stage.scale({ x: scale, y: scale });
+  stage.draw();
+}
 
-export default stage;
+function rotate (degree) {
+  stage.rotation(degree);
+  stage.draw();
+}
+
+export default { generateMap, zoom, rotate };

@@ -1,4 +1,4 @@
-import Place from './place'
+import Place from './place';
 
 export default class Graph {
   private _places: Set<Place>;
