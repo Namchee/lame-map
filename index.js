@@ -2,13 +2,25 @@
  * ENTRY POINT FILE
  */
 
-import './src/ui';
+import ui from './src/ui';
 import canvas from './src/canvas';
 import './src/assets/styles/style.scss';
 import PATH from './src/subcomponents/path';
 
-let { floorplan, floorinfo, flooradjacency } = PATH.f101;
-canvas.generateMap(floorplan, floorinfo, flooradjacency);
+let currentFloor = {
+  floorinfo: null,
+  floorplan: null,
+  flooradjacency: null
+};
+
+/*
+currentFloor.floorinfo = PATH.FLOOR_INFO.get('f101');
+currentFloor.floorplan = PATH.FLOOR_PLAN.get('f101');
+currentFloor.flooradjacency = PATH.FLOOR_ADJACENCY.get('f101');
+*/
+
+canvas.generateMap(currentFloor.floorplan, currentFloor.floorinfo, currentFloor.flooradjacency);
+ui.initDropdown(currentFloor.floorinfo);
 
 let zoomSlider = document.querySelector('.vertical-slider');
 let rotateSlider = document.querySelector('.horizontal-slider');

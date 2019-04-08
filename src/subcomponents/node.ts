@@ -1,5 +1,4 @@
 import Konva from 'konva';
-import Graph from './graph';
 import Place from './place';
 import 'font-awesome/css/font-awesome.min.css';
 

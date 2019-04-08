@@ -33,6 +33,25 @@ function initDropdown (data) {
   while (elem.firstChild)
     elem.removeChild(elem.firstChild);
 
+  if (data === null) {
+    let option = document.createElement('option');
+    option.textContent = 'Scan QR Code...';
+    option.value = '';
+    option.selected = true;
+    option.disabled = true;
+    elem.appendChild(option);
+    M.AutoInit();
+
+    return;
+  }
+
+  let option = document.createElement('option');
+  option.textContent = 'Pilih Tujuan...';
+  option.value = '';
+  option.selected = true;
+  option.disabled = true;
+  elem.appendChild(option);
+
   for (let i = 0; i < data.list.length; i++) {
     let newPlace = data.list[i];
     let info = newPlace.id;
@@ -42,6 +61,10 @@ function initDropdown (data) {
     option.value = info;
     elem.appendChild(option);
   }
+
+  elem.addEventListener('change', () => {
+    window.dispatchEvent(new CustomEvent('pathchange', { detail: elem.value }));
+  });
 
   M.AutoInit();
 }
