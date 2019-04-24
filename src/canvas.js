@@ -4,7 +4,6 @@ import Place from './subcomponents/place';
 import Graph from './subcomponents/graph';
 
 let loader = document.querySelector('.main-loader');
-let position = '10102';
 
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -14,13 +13,12 @@ const graph = new Graph();
 let mapLayer = null;
 let nodeLayer = null;
 let pathLayer = null;
+let tooltipLayer = null;
 
-// scale is temp
 const stage = new Konva.Stage({
   container: 'canvas',
   width,
   height,
-  draggable: true,
   offset: {
     x: width / 2,
     y: height / 2
@@ -30,15 +28,17 @@ const stage = new Konva.Stage({
 });
 
 stage.on('dragstart', () => {
-  stage.prevX = stage.getAbsolutePosition().x;
-  stage.prevY = stage.getAbsolutePosition().y;
+  let position = stage.getPointerPosition();
+  stage.prevX = position.x;
+  stage.prevY = position.y;
 });
 
 stage.on('dragend', () => {
-  let curX = stage.getAbsolutePosition().x;
-  let curY = stage.getAbsolutePosition().y;
-  let deltaX = Math.abs(stage.prevX - curX);
-  let deltaY = Math.abs(stage.prevY - curY);
+  let position = stage.getPointerPosition();
+  let curX = position.x;
+  let curY = position.y;
+  let deltaX = Math.abs(stage.prevX - curX) * stage.scaleX();
+  let deltaY = Math.abs(stage.prevY - curY) * stage.scaleY();
 
   if (curX > stage.prevX) {
     stage.offsetX(stage.offsetX() - deltaX);
@@ -59,53 +59,42 @@ stage.on('dragend', () => {
   stage.draw();
 });
 
-function generateMap (map, nodeData, adjacencyData) {
-  loader.style.display = 'flex';
+function drawMap(map, nodeData, adjacencyData) {
+  return new Promise((resolve) => {
+    loader.style.display = 'flex';
 
-  if (map === null || nodeData === null || adjacencyData === null) {
-    // draw splash
-    drawSplash();
-    loader.style.display = 'none';
-    return;
-  }
-  stage.destroyChildren();
+    stage.destroyChildren();
+    stage.setAttr('draggable', true);
 
-  let image = new Image();
-  mapLayer = new Konva.Layer();
+    let image = new Image();
+    mapLayer = new Konva.Layer();
 
-  image.onload = () => {
-    let imageObj = new Konva.Image({
-      image
-    });
+    image.onload = () => {
+      let imageObj = new Konva.Image({
+        image
+      });
 
-    initGraph(nodeData, adjacencyData);
-    generateShortestPath(table.get(position));
+      initGraph(nodeData, adjacencyData);
+      nodeLayer = node.drawNodes(graph.places);
 
-    mapLayer.add(imageObj);
-    nodeLayer = node.drawNodes(graph.places);
+      mapLayer.add(imageObj);
 
-    window.addEventListener('pathchange', (e) => {
-      if (pathLayer)
-        pathLayer.remove();
+      stage.add(mapLayer);
+      stage.add(nodeLayer);
+      stage.draw();
 
-      pathLayer = node.drawPath(table.get(e.detail));
-      stage.add(pathLayer);
-    });
+      loader.style.display = 'none';
+      resolve(nodeData);
+    };
 
-    stage.add(mapLayer);
-    stage.add(nodeLayer);
-    stage.draw();
-
-    loader.style.display = 'none';
-  };
-
-  image.src = map;
+    image.src = map;
+  });
 }
 
-function initGraph (nodeData, adjacencyData) {
+function initGraph(nodeData, adjacencyData) {
   table.clear();
   graph.resetGraph();
-  
+
   for (let i = 0; i < nodeData.list.length; i++) {
     let newPlace = nodeData.list[i];
     let info = newPlace.id;
@@ -127,31 +116,71 @@ function initGraph (nodeData, adjacencyData) {
   });
 }
 
-function generateShortestPath (source) {
+function drawPath(source, destination) {
+  loader.style.display = 'flex';
+
+  if (pathLayer) {
+    pathLayer.destroy();
+  }
+  if (tooltipLayer) {
+    tooltipLayer.destroy();
+  }
+
+  generateShortestPath(table.get(source));
+
+  pathLayer = node.drawPathLayer(table.get(destination));
+
+  let tooltipObject = node.drawTooltip();
+  tooltipLayer = tooltipObject.tooltipLayer;
+  let tooltip = tooltipObject.tooltip;
+
+  stage.add(pathLayer);
+  stage.add(tooltipLayer);
+
+  stage.on('mousemove', (e) => {
+    let shape = e.target;
+    if (shape && shape.attrs.key) {
+      let transform = stage.getAbsoluteTransform().copy();
+      transform.invert();
+      let position = stage.getPointerPosition();
+      let x = transform.point(position).x;
+      let y = transform.point(position).y - 5;
+      node.updateTooltip(tooltip, x, y, shape.attrs.key, shape.attrs.type === 'place');
+      tooltipLayer.batchDraw();
+    }
+  });
+
+  stage.on('mouseout', (e) => {
+    let shape = e.target;
+    if (shape && shape.attrs.key) {
+      node.hideTooltip(tooltip);
+      tooltipLayer.batchDraw();
+    }
+  });
+  
+  stage.batchDraw();
+
+  loader.style.display = 'none';
+}
+
+function generateShortestPath(source) {
   graph.resetPath();
   graph.calculateShortestPath(source);
 }
 
-function zoom (scale) {
-  stage.scale({ x: scale, y: scale });
-  stage.draw();
-}
+function drawSplash() {
+  loader.style.display = 'flex';
 
-function rotate (degree) {
-  stage.rotation(degree);
-  stage.draw();
-}
-
-function drawSplash () {
+  stage.destroyChildren();
   let splashLayer = new Konva.Layer();
 
   let splash = new Konva.Text({
     x: width / 2,
     y: height / 2,
     width: width / 2,
-    text: 'Please scan QR code to continue',
-    fill: '#5C5B5B',
-    fontSize: 48,
+    text: 'Welcome!\nPlease scan QR code to continue',
+    fill: '#5c5b5b',
+    fontSize: 40,
     fontFamily: 'Impact',
     align: 'center'
   });
@@ -160,7 +189,63 @@ function drawSplash () {
   splash.offsetY(splash.height() / 2);
 
   splashLayer.add(splash);
+
+  let anim = new Konva.Animation((frame) => {
+    let scale = Math.abs(Math.sin(frame.time / 5000 * 2 * Math.PI)) / 7 + 1;
+    splash.scale({ x: scale, y: scale });
+  }, splashLayer);
+
+  anim.start();
+
   stage.add(splashLayer);
+  stage.batchDraw();
+
+  loader.style.display = 'none';
 }
 
-export default { generateMap, zoom, rotate };
+function drawError() {
+  loader.style.display = 'flex';
+
+  stage.destroyChildren();
+  let errorLayer = new Konva.Layer();
+
+  let error = new Konva.Text({
+    x: width / 2,
+    y: height / 2,
+    width: width / 2,
+    text: '~~Error!~~\nThis QR Code is unrecognizable!',
+    fill: '#5C5B5B',
+    fontSize: 48,
+    fontFamily: 'Impact',
+    align: 'center'
+  });
+
+  error.offsetX(error.width() / 2);
+  error.offsetY(error.height() / 2);
+
+  errorLayer.add(error);
+
+  let anim = new Konva.Animation((frame) => {
+    let scale = Math.abs(Math.sin(frame.time / 5000 * 2 * Math.PI)) / 7 + 1;
+    error.scale({ x: scale, y: scale });
+  }, errorLayer);
+
+  anim.start();
+
+  stage.add(errorLayer);
+  stage.batchDraw();
+
+  loader.style.display = 'none';
+}
+
+function rotateCanvas(rotation) {
+  stage.rotation(rotation);
+  stage.batchDraw();
+}
+
+function scaleCanvas(scale) {
+  stage.scale({ x: scale, y: scale });
+  stage.batchDraw();
+}
+
+export default { drawMap, drawPath, drawError, drawSplash, rotateCanvas, scaleCanvas };

@@ -3,10 +3,10 @@ import 'materialize-css/extras/noUiSlider/nouislider.css';
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css/dist/js/materialize.min';
 
-let horizontal_slider = document.querySelector('.horizontal-slider');
-let vertical_slider = document.querySelector('.vertical-slider');
+let rotateSlider = document.querySelector('.horizontal-slider');
+let scaleSlider = document.querySelector('.vertical-slider');
 
-noUiSlider.create(horizontal_slider, {
+noUiSlider.create(rotateSlider, {
   range: {
     'min': -180,
     'max': 180
@@ -17,7 +17,7 @@ noUiSlider.create(horizontal_slider, {
   orientation: 'horizontal'
 });
 
-noUiSlider.create(vertical_slider, {
+noUiSlider.create(scaleSlider, {
   start: 1,
   direction: 'rtl',
   orientation: 'vertical',
@@ -28,12 +28,20 @@ noUiSlider.create(vertical_slider, {
   }
 });
 
+rotateSlider.noUiSlider.on('slide', () => {
+  window.dispatchEvent(new CustomEvent('rotate', { detail: rotateSlider.noUiSlider.get() }));
+});
+
+scaleSlider.noUiSlider.on('slide', () => {
+  window.dispatchEvent(new CustomEvent('scale', { detail: scaleSlider.noUiSlider.get() }));
+});
+
 function initDropdown (data) {
   let elem = document.querySelector('.selector');
   while (elem.firstChild)
     elem.removeChild(elem.firstChild);
 
-  if (data === null) {
+  if (data === null || data === undefined) {
     let option = document.createElement('option');
     option.textContent = 'Scan QR Code...';
     option.value = '';
@@ -69,4 +77,9 @@ function initDropdown (data) {
   M.AutoInit();
 }
 
-export default { initDropdown };
+function resetSlider() {
+  rotateSlider.noUiSlider.set(0);
+  scaleSlider.noUiSlider.set(1);
+}
+
+export default { initDropdown, resetSlider };

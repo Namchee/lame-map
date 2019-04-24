@@ -10,4 +10,8 @@ FLOOR_PLAN.set('f101', fp101);
 FLOOR_INFO.set('f101', fi101);
 FLOOR_ADJACENCY.set('f101', fa101);
 
-export default { FLOOR_PLAN, FLOOR_INFO, FLOOR_ADJACENCY };
+function getAssets (floor) {
+  return [ FLOOR_PLAN.get(floor), FLOOR_INFO.get(floor), FLOOR_ADJACENCY.get(floor) ];
+}
+
+export default { getAssets };

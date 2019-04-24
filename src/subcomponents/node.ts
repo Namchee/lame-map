@@ -7,21 +7,22 @@ interface Point {
   y: number;
 }
 
-function drawNodes (nodes: Set<Place>): Konva.Layer {
-  let nodeLayer: Konva.Layer = new Konva.Layer;
+function drawNodes(nodes: Set<Place>): Konva.Layer {
+  let nodeLayer: Konva.Layer = new Konva.Layer();
 
   nodes.forEach(value => {
     let x = value.x;
     let y = value.y;
+    let key = value.id;
 
     if (!value.shadow)
-      nodeLayer.add(generateNodes({ x, y }));
+      nodeLayer.add(generateNodes({ x, y }, key));
   })
 
   return nodeLayer;
 }
 
-function generateNodes (point: Point): Konva.Text {
+function generateNodes(point: Point, key: string): Konva.Text {
   let { x, y } = point;
 
   let placeNode = new Konva.Text({
@@ -29,8 +30,14 @@ function generateNodes (point: Point): Konva.Text {
     y,
     text: '\uf192',
     fontFamily: 'FontAwesome',
-    fill: '#209CEE',
-    fontSize: 50
+    fill: '#209cee',
+    fontSize: 50,
+    key,
+    shadowBlur: 10,
+    shadowOffset: { x: 0, y: 0 },
+    shadowColor: '#209CEE',
+    shadowOpacity: 0.65,
+    type: 'place'
   });
 
   // dunno why... Add another 2.5 to make line centered
@@ -40,7 +47,7 @@ function generateNodes (point: Point): Konva.Text {
   return placeNode;
 }
 
-function drawPath (finalDestination: Place): Konva.Layer {
+function drawPathLayer(finalDestination: Place): Konva.Layer {
   let pathLayer: Konva.Layer = new Konva.Layer();
 
   let path: Place[] = finalDestination.shortestPath;
@@ -55,16 +62,71 @@ function drawPath (finalDestination: Place): Konva.Layer {
   }
 
   let pathLine: Konva.Line = new Konva.Line({
-    stroke: '#42a5f5',
+    stroke: '#209cee',
     strokeWidth: 8,
     lineJoin: 'round',
     lineCap: 'round',
-    points
+    points,
+    key: finalDestination.distance,
+    type: 'path'
   });
 
   pathLayer.add(pathLine);
-  
+
   return pathLayer;
 }
 
-export default { drawNodes, drawPath };
+function drawTooltip(): object {
+  let tooltipLayer = new Konva.Layer();
+
+  let tooltip = new Konva.Label({
+    opacity: 1,
+    visible: false,
+    listening: false
+  });
+
+  tooltip.add(new Konva.Tag({
+    fill: '#363636',
+    pointerDirection: 'down',
+    pointerHeight: 10,
+    pointerWidth: 10,
+    lineJoin: 'round',
+    shadowColor: 'black',
+    shadowBlur: 10,
+    shadowOffset: { x: 10, y: 10 },
+    shadowOpacity: 0.5,
+    strokeWidth: 10
+  }));
+
+  tooltip.add(new Konva.Text({
+    text: '',
+    fontFamily: 'FontAwesome',
+    fontSize: 24,
+    padding: 15,
+    fill: 'white'
+  }));
+
+  window.addEventListener('rotate', (e) => {
+    tooltip.rotation(-e.detail);
+  })
+
+  tooltipLayer.add(tooltip);
+
+  return { tooltipLayer, tooltip };
+}
+
+function updateTooltip(tooltip: Konva.Label, x: number, y: number, text: string, isPlace: boolean): void {
+  let tex = (isPlace) ? `\uf041 ${text}` : `\uf018 ${text} m`;
+  tooltip.getText().text(tex);
+  tooltip.position({
+    x,
+    y
+  });
+  tooltip.show();
+}
+
+function hideTooltip(tooltip: Konva.Label) {
+  tooltip.hide();
+}
+
+export default { drawNodes, drawPathLayer, drawTooltip, updateTooltip, hideTooltip };
